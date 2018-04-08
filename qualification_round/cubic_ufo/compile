@@ -1,0 +1,1 @@
+g++ -std=c++14 cubic_ufo.cpp -O3 -o cubic_ufo

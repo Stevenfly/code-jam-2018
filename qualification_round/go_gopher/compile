@@ -1,0 +1,1 @@
+g++ -std=c++14 go_gopher.cpp -O3 -o go_gopher

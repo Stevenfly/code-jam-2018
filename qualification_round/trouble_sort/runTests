@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ ${#} -ne 2 ]; then
+	echo "ERROR: Incorrect number of arguments." 2>&1
+	exit 1
+fi
+
+for file in $(cat "${1}"); do
+	if [ ! -r "${file}.in" ]; then
+		echo "ERROR: Read file ${file}.in fail!" 2>&1
+		exit 1
+	elif [ ! -e "${file}.in" ]; then
+		echo "ERROR: Missing file ${file}.in!" 2>&1
+		exit 1
+	elif [ ! -r "${file}.out" ]; then
+		echo "ERROR: Read file ${file}.out fail!" 2>&1
+		exit 1
+	elif [ ! -e "${file}.out" ]; then
+		echo "ERROR: Missing file ${file}.out!" 2>&1
+		exit 1
+	fi
+
+	tmpFile=$(mktemp /tmp/tmp.XXX)
+
+	if [ -r "${file}.args" ]; then 
+		${2} $(cat "${file}.args") < "${file}.in" > $tmpFile
+	else
+		${2} < "${file}.in" > $tmpFile
+	fi
+
+	diff "${file}.out" $tmpFile > /dev/null
+
+	if [ ${?} -ne 0 ]; then
+		echo "TEST ${file} FAILED:"
+		echo "Input:"
+		cat "${file}.in"
+		echo "Expected:"
+		cat "${file}.out"
+		echo "Actual:"
+		cat "$tmpFile"
+	else
+		echo "TEST ${file} SUCCEEDED."
+	fi
+	
+	rm "$tmpFile"
+done
