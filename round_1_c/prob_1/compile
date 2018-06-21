@@ -1,0 +1,1 @@
+g++ -std=c++14 prob_1.cpp -O3 -o prob_1
