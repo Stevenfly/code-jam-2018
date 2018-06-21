@@ -1,6 +1,6 @@
 # code-jam-2018
 
-> Username: Superdonut
+> contest name: Superdonut
 
 - Passed qualification round
 
